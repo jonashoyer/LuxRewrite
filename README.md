@@ -2,4 +2,4 @@
 
 A rewriting binary program
 
-Can rewrite Unity 2019 Personal executable to have dark mode, and can rewrite back to ligt mode (don't know why).
+Can rewrite Unity 2019 Personal executable to have dark mode, and can rewrite back to light mode (don't know why).
