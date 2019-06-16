@@ -32,28 +32,13 @@ namespace LuxRewrite {
 
                     byte[] search = { 0x74, 0x04, 0x33, 0xC0, 0xEB, 0x02, 0x8B, 0x07 };
 
-                    bool changeDone = false;
-                    for (int i = 0; i < buf.Length - search.Length; i++) {
+                    bool wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x75 });
 
-                        for (int x = 0; x < search.Length; x++) {
-                            if (buf[i + x] != search[x]) break;
-                            if (x == search.Length - 1) {
-                                Console.WriteLine("\nSearch found at " + i);
-                                buf[i] = 0x75;
-                                changeDone = true;
-
-                                break;
-                            }
-                        }
-
-                        if (changeDone) break;
-                    }
-
-                    if (changeDone) {
+                    if (wasChanged) {
                         File.WriteAllBytes(filepath, buf);
-                        MessageBox.Show("Change done!");
+                        mainForm.SetStatusText("Success!");
                     } else {
-                        MessageBox.Show("Could not found expected!");
+                        mainForm.SetStatusText("Failed");
                     }
 
                     Console.WriteLine("\nSearch done " + buf.Length);
@@ -64,29 +49,13 @@ namespace LuxRewrite {
                 case "unity19light": {
                         byte[] search = { 0x75, 0x04, 0x33, 0xC0, 0xEB, 0x02, 0x8B, 0x07 };
 
-                        bool changeDone = false;
-                        for (int i = 0; i < buf.Length - search.Length; i++) {
+                        bool wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x74 });
 
-                            for (int x = 0; x < search.Length; x++) {
-                                if (buf[i + x] != search[x]) break;
-
-                                if (x != search.Length - 1) continue;
-
-                                Console.WriteLine("\nSearch found at " + i);
-                                buf[i] = 0x74;
-                                changeDone = true;
-
-                                break;
-                            }
-
-                            if (changeDone) break;
-                        }
-
-                        if (changeDone) {
+                        if (wasChanged) {
                             File.WriteAllBytes(filepath, buf);
-                            MessageBox.Show("Change done!");
+                            mainForm.SetStatusText("Success!");
                         } else {
-                            MessageBox.Show("Could not found expected!");
+                            mainForm.SetStatusText("Failed");
                         }
 
                         Console.WriteLine("\nSearch done " + buf.Length);
@@ -96,7 +65,28 @@ namespace LuxRewrite {
 
         }
 
+        static bool FindAndReplaceBytes(byte[] data, byte[] search, byte[] replace) {
 
+            int i, x, y;
+            for (i = 0; i < data.Length - Math.Max(search.Length, replace.Length); i++) {
+
+                for (x = 0; x < search.Length; x++) {
+                    if (data[i + x] != search[x]) break;
+
+                    if (x != search.Length - 1) continue;
+
+                    Console.WriteLine("\nSearch found at " + i);
+
+                    for(y = 0; y < replace.Length; y++) {
+                        data[i + y] = replace[y];
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     class ComboItem {

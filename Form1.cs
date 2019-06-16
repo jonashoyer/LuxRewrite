@@ -8,6 +8,8 @@ namespace LuxRewrite {
     
     public partial class Form1 : Form {
 
+        string filepath;
+
         public Form1() {
             InitializeComponent();
             this.AllowDrop = true;
@@ -15,11 +17,12 @@ namespace LuxRewrite {
             this.DragDrop += new DragEventHandler(Form1_DragDrop);
 
             label1.Text = "";
+            SetStatusText("");
             button2.Enabled = false;
 
             comboBox1.DataSource = new ComboItem[] {
-                new ComboItem{ ID = "unity19dark", Text = "Unity 2019 Darkmode" },
-                new ComboItem{ ID = "unity19light", Text = "Unity 2019 Lightmode" },
+                new ComboItem{ ID = "unity19dark", Text = "Unity 2019 Dark mode" },
+                new ComboItem{ ID = "unity19light", Text = "Unity 2019 Light mode" },
             };
         }
 
@@ -32,20 +35,26 @@ namespace LuxRewrite {
         }
 
         void Form1_DragDrop(object sender, DragEventArgs e) {
+
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            foreach (string file in files) Console.WriteLine(file);
+            
+            filepath = files[0];
+            string[] arr = files[0].Split('\\');
+            label1.Text = arr[arr.Length - 1];
+            
             button2.Enabled = true;
+            SetStatusText("");
         }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e) {
-
+            SetStatusText("");
         }
 
 
         private void Button2_Click(object sender, EventArgs e) {
             try {
 
-                Program.RewriteFile(((ComboItem)comboBox1.SelectedItem).ID, openFileDialog1.FileName);
+                Program.RewriteFile(((ComboItem)comboBox1.SelectedItem).ID, filepath);
 
             } catch (SecurityException ex) {
                 MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
@@ -55,10 +64,15 @@ namespace LuxRewrite {
 
         private void Button1_Click(object sender, EventArgs e) {
             if (openFileDialog1.ShowDialog() == DialogResult.OK) {
-                string fn = openFileDialog1.FileName;
                 button2.Enabled = true;
-                label1.Text = fn.Substring(Math.Max(0, fn.Length - 28)); ;
+                filepath = openFileDialog1.FileName;
+                label1.Text = openFileDialog1.SafeFileName;
+                SetStatusText("");
             }
+        }
+
+        public void SetStatusText(string str) {
+            label2.Text = str;
         }
     }
 }
