@@ -1,8 +1,9 @@
-# LuxProcess
+# LuxRewrite
 
-A process shortcut handler
+A rewriting binary program
 
-Alt+K: Kill current selected process  
-Alt+S: Toggle suspend state of current selected process  
-Alt+H: Show/hide console window  
-Alt+Q: Quit  
+Can rewrite Unity 2019 Personal executable to have dark mode, and can rewrite back to light mode (don't know why).
+- Select "Unity 2019 Dark mode"
+- Select the unity.exe file
+- Click Rewrite
+- Profit?
