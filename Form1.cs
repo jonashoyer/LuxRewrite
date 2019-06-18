@@ -23,6 +23,8 @@ namespace LuxRewrite {
             comboBox1.DataSource = new ComboItem[] {
                 new ComboItem{ ID = "unity19dark", Text = "Unity 2019 Dark mode" },
                 new ComboItem{ ID = "unity19light", Text = "Unity 2019 Light mode" },
+                new ComboItem{ ID = "unity18dark", Text = "Unity 2018 Dark mode" },
+                new ComboItem{ ID = "unity18light", Text = "Unity 2018 Light mode" },
             };
         }
 
@@ -54,7 +56,7 @@ namespace LuxRewrite {
         private void Button2_Click(object sender, EventArgs e) {
             try {
 
-                Program.RewriteFile(((ComboItem)comboBox1.SelectedItem).ID, filepath);
+                Patcher.RewriteFile(((ComboItem)comboBox1.SelectedItem).ID, filepath);
 
             } catch (SecurityException ex) {
                 MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
