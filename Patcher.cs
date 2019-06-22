@@ -27,89 +27,98 @@ namespace LuxRewrite {
         public static void RewriteFile(string mode, string filepath) {
 
             byte[] buf = File.ReadAllBytes(filepath);
+            bool wasChanged = false;
 
             switch (mode) {
-                case "unity19dark": {
+                case "unity19.1dark": {
 
                     SetUnityRegistry(0x1);
 
-                    mainForm.SetStatusText("Set Registry Key");
-
                     byte[] search = { 0x74, 0x04, 0x33, 0xC0, 0xEB, 0x02, 0x8B, 0x07 };
-
-                    bool wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x75 });
-
-                    if (wasChanged) {
-                        File.WriteAllBytes(filepath, buf);
-                        mainForm.SetStatusText("Success!");
-                    } else {
-                        mainForm.SetStatusText("Failed");
-                    }
-
-                    Console.WriteLine("\nSearch done " + buf.Length);
+                    wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x75 });
 
                     break;
                 }
 
-                case "unity19light": {
+                case "unity19.1light": {
 
                     SetUnityRegistry(0x0);
-                    mainForm.SetStatusText("Set Registry Key");
 
                     byte[] search = { 0x75, 0x04, 0x33, 0xC0, 0xEB, 0x02, 0x8B, 0x07 };
+                    wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x74 });
 
-                    bool wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x74 });
-
-                    if (wasChanged) {
-                        File.WriteAllBytes(filepath, buf);
-                        mainForm.SetStatusText("Success!");
-                    } else {
-                        mainForm.SetStatusText("Failed");
-                    }
-
-                    Console.WriteLine("\nSearch done " + buf.Length);
                     break;
+                }
+
+                case "unity19.2dark": {
+
+                        SetUnityRegistry(0x1);
+
+                        byte[] search = { 0x75, 0x15, 0x33, 0xC0, 0xEB, 0x13, 0x90 };
+                        wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x76 });
+
+                        break;
+                }
+
+                case "unity19.2light": {
+
+                        SetUnityRegistry(0x0);
+
+                        byte[] search = { 0x76, 0x15, 0x33, 0xC0, 0xEB, 0x13, 0x90 };
+                        wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x75 });
+
+                        break;
+                }
+
+                case "unity19.3dark": {
+
+                        SetUnityRegistry(0x1);
+
+                        byte[] search = { 0x75, 0x15, 0x33, 0xC0, 0xEB, 0x13, 0x90 };
+                        wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x74 });
+
+                        break;
+                }
+
+                case "unity19.3light": {
+
+                        SetUnityRegistry(0x0);
+
+                        byte[] search = { 0x74, 0x15, 0x33, 0xC0, 0xEB, 0x13, 0x90 };
+                        wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x75 });
+
+                        break;
                 }
 
                 case "unity18dark": {
 
                     SetUnityRegistry(0x1);
-                    mainForm.SetStatusText("Set Registry Key");
 
                     byte[] search = { 0x75, 0x08, 0x33, 0xC0, 0x48, 0x83, 0xC4, 0x30, 0x5B, 0xC3, 0x8B, 0x03, 0x48 };
+                    wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x74 });
 
-                    bool wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x74 });
-
-                    if (wasChanged) {
-                        File.WriteAllBytes(filepath, buf);
-                        mainForm.SetStatusText("Success!");
-                    } else {
-                        mainForm.SetStatusText("Failed");
-                    }
-
-                    Console.WriteLine("\nSearch done " + buf.Length);
                     break;
                 }
+
                 case "unity18light": {
 
                     SetUnityRegistry(0x0);
-                    mainForm.SetStatusText("Set Registry Key");
 
                     byte[] search = { 0x74, 0x08, 0x33, 0xC0, 0x48, 0x83, 0xC4, 0x30, 0x5B, 0xC3, 0x8B, 0x03, 0x48 };
+                    wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x75 });
 
-                    bool wasChanged = FindAndReplaceBytes(buf, search, new byte[] { 0x75 });
-
-                    if (wasChanged) {
-                        File.WriteAllBytes(filepath, buf);
-                        mainForm.SetStatusText("Success!");
-                    } else {
-                        mainForm.SetStatusText("Failed");
-                    }
-
-                    Console.WriteLine("\nSearch done " + buf.Length);
                     break;
                 }
             }
+
+            if (wasChanged) {
+                File.WriteAllBytes(filepath, buf);
+                mainForm.SetStatusText("Success!");
+            } else {
+                mainForm.SetStatusText("Failed");
+            }
+
+            Console.WriteLine("\nSearch done " + buf.Length);
 
         }
 

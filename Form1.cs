@@ -21,8 +21,15 @@ namespace LuxRewrite {
             button2.Enabled = false;
 
             comboBox1.DataSource = new ComboItem[] {
-                new ComboItem{ ID = "unity19dark", Text = "Unity 2019 Dark mode" },
-                new ComboItem{ ID = "unity19light", Text = "Unity 2019 Light mode" },
+                new ComboItem{ ID = "unity19.1dark", Text = "Unity 2019.1 Dark mode" },
+                new ComboItem{ ID = "unity19.1light", Text = "Unity 2019.1 Light mode" },
+
+                new ComboItem{ ID = "unity19.2dark", Text = "Unity 2019.2 beta Dark mode" },
+                new ComboItem{ ID = "unity19.2light", Text = "Unity 2019.2 beta Light mode" },
+
+                new ComboItem{ ID = "unity19.3dark", Text = "Unity 2019.3 alpha Dark mode" },
+                new ComboItem{ ID = "unity19.3light", Text = "Unity 2019.3 alpha Light mode" },
+
                 new ComboItem{ ID = "unity18dark", Text = "Unity 2018 Dark mode" },
                 new ComboItem{ ID = "unity18light", Text = "Unity 2018 Light mode" },
             };
