@@ -9,7 +9,7 @@ namespace LuxRewrite {
     public partial class Form1 : Form {
 
         string filepath;
-
+        bool isDarkMode = true;
         public Form1() {
             InitializeComponent();
             this.AllowDrop = true;
@@ -21,17 +21,10 @@ namespace LuxRewrite {
             button2.Enabled = false;
 
             comboBox1.DataSource = new ComboItem[] {
-                new ComboItem{ ID = "unity19.1dark", Text = "Unity 2019.1 Dark mode" },
-                new ComboItem{ ID = "unity19.1light", Text = "Unity 2019.1 Light mode" },
-
-                new ComboItem{ ID = "unity19.2dark", Text = "Unity 2019.2 beta Dark mode" },
-                new ComboItem{ ID = "unity19.2light", Text = "Unity 2019.2 beta Light mode" },
-
-                new ComboItem{ ID = "unity19.3dark", Text = "Unity 2019.3 alpha Dark mode" },
-                new ComboItem{ ID = "unity19.3light", Text = "Unity 2019.3 alpha Light mode" },
-
-                new ComboItem{ ID = "unity18dark", Text = "Unity 2018 Dark mode" },
-                new ComboItem{ ID = "unity18light", Text = "Unity 2018 Light mode" },
+                new ComboItem{ ID = "unity19.3", Text = "Unity 2019.3" },
+                new ComboItem{ ID = "unity19.2", Text = "Unity 2019.2" },
+                new ComboItem{ ID = "unity19.1", Text = "Unity 2019.1" },
+                new ComboItem{ ID = "unity18", Text = "Unity 2018" },
             };
         }
 
@@ -61,13 +54,15 @@ namespace LuxRewrite {
 
 
         private void Button2_Click(object sender, EventArgs e) {
-            try {
 
-                Patcher.RewriteFile(((ComboItem)comboBox1.SelectedItem).ID, filepath);
+            try {
+                string modeId = ((ComboItem)comboBox1.SelectedItem).ID + (isDarkMode ? "dark" : "light");
+                Patcher.RewriteFile(modeId, filepath);
 
             } catch (SecurityException ex) {
-                MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
-                $"Details:\n\n{ex.StackTrace}");
+                MessageBox.Show($"Security\n\nMessage\n{ex.Message}", "Error");
+            } catch(IOException ex) {
+                MessageBox.Show($"IO\n\nMessage:\n{ex.Message}", "Error");
             }
         }
 
@@ -82,6 +77,14 @@ namespace LuxRewrite {
 
         public void SetStatusText(string str) {
             label2.Text = str;
+        }
+
+        private void DarkMode_CheckedChanged(object sender, EventArgs e) {
+            isDarkMode = true;
+        }
+
+        private void LightMode_CheckedChanged(object sender, EventArgs e) {
+            isDarkMode = false;
         }
     }
 }
