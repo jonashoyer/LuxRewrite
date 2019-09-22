@@ -56,7 +56,7 @@ namespace LuxRewrite {
         private void Button2_Click(object sender, EventArgs e) {
 
             try {
-                string modeId = ((ComboItem)comboBox1.SelectedItem).ID + (isDarkMode ? "dark" : "light");
+                string modeId = GetSelectedId() + (isDarkMode ? "dark" : "light");
                 Patcher.RewriteFile(modeId, filepath);
 
             } catch (SecurityException ex) {
@@ -67,6 +67,7 @@ namespace LuxRewrite {
         }
 
         private void Button1_Click(object sender, EventArgs e) {
+            openFileDialog1.Filter = FilterById(GetSelectedId());
             if (openFileDialog1.ShowDialog() == DialogResult.OK) {
                 button2.Enabled = true;
                 filepath = openFileDialog1.FileName;
@@ -85,6 +86,22 @@ namespace LuxRewrite {
 
         private void LightMode_CheckedChanged(object sender, EventArgs e) {
             isDarkMode = false;
+        }
+
+        string GetSelectedId() {
+            return ((ComboItem)comboBox1.SelectedItem).ID;
+        }
+
+        string FilterById(string id) {
+            switch (id) {
+                case "unity19.3":
+                case "unity19.2":
+                case "unity19.1":
+                case "unity18":
+                    return "Unity|unity.exe|All Files|*.*";
+                default:
+                    return "Exe Files|*.exe|All Files|*.*";
+            }
         }
     }
 }

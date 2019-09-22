@@ -75,7 +75,7 @@
             // openFileDialog1
             // 
             this.openFileDialog1.DefaultExt = "exe";
-            this.openFileDialog1.Filter = "Exe Files (.exe)|*.exe|All Files (*.*)|*.*";
+            this.openFileDialog1.Filter = "Exe Files|*.exe|All Files|*.*|Unity|unity.exe";
             this.openFileDialog1.RestoreDirectory = true;
             this.openFileDialog1.Title = "Select rewrite file";
             // 
